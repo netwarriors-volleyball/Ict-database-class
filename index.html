@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#071426">
+  <title>ICT DATABASE CLASS | Student Portal</title>
+  <meta name="description" content="ICT Database Class learning portal for notes, SQL tutorials, assignments and class updates.">
+  <style>
+    :root {
+      --bg: #071426;
+      --panel: #0e2038;
+      --panel2: #102743;
+      --text: #edf5ff;
+      --muted: #9fb3cc;
+      --blue: #4c8dff;
+      --cyan: #4de2df;
+      --line: rgba(167, 198, 235, .15);
+      --shadow: 0 18px 45px rgba(0,0,0,.23);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0; background: radial-gradient(circle at 85% 0%, #12345a 0, transparent 32%), var(--bg);
+      color: var(--text); font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+      line-height: 1.6;
+    }
+    button, input, select, textarea { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    a { color: inherit; text-decoration: none; }
+    .wrap { width: min(1120px, calc(100% - 32px)); margin: 0 auto; }
+    header {
+      position: sticky; top: 0; z-index: 10; background: rgba(7,20,38,.88);
+      backdrop-filter: blur(16px); border-bottom: 1px solid var(--line);
+    }
+    .nav { min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+    .brand { display: flex; align-items: center; gap: 11px; font-weight: 850; letter-spacing: .2px; }
+    .logo {
+      width: 43px; height: 43px; display: grid; place-items: center; border-radius: 13px;
+      color: #061426; font-size: 21px; background: linear-gradient(135deg, var(--cyan), var(--blue));
+      box-shadow: 0 8px 25px rgba(76,141,255,.22);
+    }
+    .brand small { display: block; font-size: 10px; color: var(--muted); letter-spacing: 2px; font-weight: 700; }
+    .navlinks { display: flex; align-items: center; gap: 21px; color: var(--muted); font-size: 13px; }
+    .navlinks a:hover { color: var(--cyan); }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 0; cursor: pointer;
+      border-radius: 12px; padding: 11px 16px; font-weight: 750; color: #061426;
+      background: linear-gradient(135deg, var(--cyan), #83f4e6); box-shadow: 0 8px 25px rgba(77,226,223,.13);
+    }
+    .btn.secondary { color: var(--text); background: #142b47; border: 1px solid var(--line); box-shadow: none; }
+    .btn.small { padding: 8px 12px; font-size: 12px; }
+    .hero { padding: 66px 0 38px; display: grid; grid-template-columns: 1.1fr .9fr; align-items: center; gap: 35px; }
+    .eyebrow { color: var(--cyan); text-transform: uppercase; letter-spacing: 2.3px; font-size: 11px; font-weight: 850; }
+    h1 { font-size: clamp(37px, 6vw, 63px); line-height: 1.04; letter-spacing: -2px; margin: 15px 0 19px; }
+    .gradient { background: linear-gradient(90deg, #fff, #7fe9e5 55%, #6e9fff); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .lead { color: var(--muted); max-width: 570px; font-size: 16px; }
+    .hero-actions { display: flex; gap: 11px; flex-wrap: wrap; margin-top: 24px; }
+    .hero-meta { display: flex; gap: 22px; flex-wrap: wrap; color: var(--muted); font-size: 12px; margin-top: 24px; }
+    .hero-meta strong { color: var(--text); }
+    .visual {
+      min-height: 330px; border: 1px solid var(--line); border-radius: 25px; padding: 20px;
+      background: linear-gradient(145deg, rgba(23,54,88,.94), rgba(10,27,48,.96)); box-shadow: var(--shadow); position: relative; overflow: hidden;
+    }
+    .visual:before { content: ""; position: absolute; width: 220px; height: 220px; border-radius: 50%; background: rgba(77,226,223,.12); filter: blur(15px); right: -70px; top: -70px; }
+    .windowbar { display: flex; gap: 6px; margin-bottom: 18px; position: relative; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: #ff777d; }
+    .dot:nth-child(2) { background: #ffd166; } .dot:nth-child(3) { background: #4de2a1; }
+    .codebox { position: relative; background: #061322; border: 1px solid rgba(255,255,255,.08); border-radius: 14px; padding: 18px; font: 12px/1.9 ui-monospace, SFMono-Regular, Menlo, monospace; color: #a8c3df; overflow: auto; }
+    .kw { color: #4de2df; } .str { color: #ffd68a; } .comment { color: #67839f; }
+    .mini-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-top: 13px; position: relative; }
+    .mini-stat { background: rgba(255,255,255,.045); border: 1px solid var(--line); border-radius: 12px; padding: 12px; }
+    .mini-stat b { display: block; font-size: 18px; } .mini-stat span { color: var(--muted); font-size: 10px; }
+    section { padding: 37px 0; }
+    .section-head { display: flex; justify-content: space-between; align-items: end; gap: 16px; margin-bottom: 20px; }
+    h2 { font-size: clamp(24px, 3vw, 32px); letter-spacing: -.7px; margin: 4px 0; }
+    .sub { color: var(--muted); margin: 0; font-size: 14px; }
+    .grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 15px; }
+    .card { border: 1px solid var(--line); background: linear-gradient(145deg, rgba(17,39,65,.92), rgba(12,29,50,.94)); border-radius: 18px; padding: 19px; box-shadow: 0 10px 28px rgba(0,0,0,.1); }
+    .card:hover { border-color: rgba(77,226,223,.38); transform: translateY(-2px); transition: .2s ease; }
+    .icon { width: 43px; height: 43px; border-radius: 13px; display: grid; place-items: center; font-size: 20px; background: rgba(77,226,223,.1); border: 1px solid rgba(77,226,223,.15); margin-bottom: 13px; }
+    .card h3 { margin: 0 0 6px; font-size: 17px; } .card p { margin: 0 0 15px; color: var(--muted); font-size: 13px; }
+    .textlink { color: var(--cyan); font-weight: 750; font-size: 12px; }
+    .toolbar { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
+    .field { background: #091a2d; border: 1px solid var(--line); border-radius: 11px; color: var(--text); padding: 11px 13px; width: 100%; outline: none; }
+    .field:focus { border-color: var(--cyan); }
+    .search { flex: 1; min-width: 180px; }
+    .resource-list { display: grid; grid-template-columns: repeat(2,1fr); gap: 12px; }
+    .resource { display: flex; align-items: center; gap: 13px; }
+    .resource .icon { flex: 0 0 43px; margin: 0; }
+    .resource h3 { font-size: 14px; margin: 0; } .resource p { margin: 2px 0 0; font-size: 11px; }
+    .resource .textlink { margin-left: auto; white-space: nowrap; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 17px; }
+    .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 14px; }
+    table { width: 100%; border-collapse: collapse; min-width: 450px; font-size: 12px; }
+    th, td { padding: 12px 13px; text-align: left; border-bottom: 1px solid var(--line); }
+    th { color: var(--cyan); background: rgba(77,226,223,.045); font-weight: 800; }
+    td { color: var(--muted); } tr:last-child td { border-bottom: 0; }
+    pre { white-space: pre-wrap; overflow-wrap: anywhere; color: #b7d1ed; background: #061322; border: 1px solid var(--line); padding: 15px; border-radius: 12px; font: 12px/1.7 ui-monospace, monospace; }
+    .notice { color: #ffe2a8; border: 1px solid rgba(255,209,102,.22); background: rgba(255,209,102,.07); padding: 12px 14px; border-radius: 12px; font-size: 12px; margin-top: 12px; }
+    .stack { display: grid; gap: 12px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .form-grid .full { grid-column: 1 / -1; }
+    .status { color: var(--muted); font-size: 12px; min-height: 20px; margin-top: 8px; }
+    footer { margin-top: 35px; border-top: 1px solid var(--line); padding: 27px 0; color: var(--muted); font-size: 12px; }
+    .foot { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .hidden { display: none !important; }
+    @media (max-width: 800px) {
+      .navlinks { display: none; } .hero { grid-template-columns: 1fr; padding-top: 43px; gap: 25px; }
+      .visual { min-height: auto; } .grid { grid-template-columns: repeat(2,1fr); } .two-col { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 520px) {
+      .wrap { width: min(100% - 24px, 1120px); } .grid, .resource-list { grid-template-columns: 1fr; }
+      .section-head { align-items: start; flex-direction: column; } .form-grid { grid-template-columns: 1fr; } .form-grid .full { grid-column: auto; }
+      h1 { letter-spacing: -1.5px; } .mini-stats { gap: 6px; } .mini-stat { padding: 9px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap nav">
+      <a class="brand" href="#home" aria-label="ICT Database Class home">
+        <span class="logo">⌘</span>
+        <span>ICT DATABASE CLASS<small>LEARN • PRACTISE • GROW</small></span>
+      </a>
+      <nav class="navlinks" aria-label="Main navigation">
+        <a href="#resources">Resources</a><a href="#sql">SQL Lab</a><a href="#timetable">Timetable</a><a href="#classroom">Classroom</a>
+      </nav>
+      <a class="btn small" href="#classroom">Student hub ↗</a>
+    </div>
+  </header>
+
+  <main id="home">
+    <div class="wrap hero">
+      <div>
+        <div class="eyebrow">Your learning space · Database systems</div>
+        <h1>Think in data.<br><span class="gradient">Build the future.</span></h1>
+        <p class="lead">Welcome to ICT DATABASE CLASS — your hub for database notes, SQL practice, assignments, announcements, and collaborative learning.</p>
+        <div class="hero-actions">
+          <a class="btn" href="#resources">Explore learning resources <span>→</span></a>
+          <a class="btn secondary" href="#sql">Practise SQL</a>
+        </div>
+        <div class="hero-meta"><span>✦ <strong>Student-centred</strong> learning</span><span>⌘ <strong>Practical</strong> SQL skills</span><span>↗ <strong>Learn</strong> together</span></div>
+      </div>
+      <div class="visual" aria-label="SQL code preview">
+        <div class="windowbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+        <div class="codebox">
+          <div class="comment">-- Your first database query</div>
+          <div><span class="kw">SELECT</span> student_name, course</div>
+          <div><span class="kw">FROM</span> students</div>
+          <div><span class="kw">WHERE</span> course = <span class="str">'ICT'</span>;</div>
+          <br>
+          <div class="comment">-- Learn it. Test it. Understand it.</div>
+          <div><span class="kw">ORDER BY</span> student_name;</div>
+        </div>
+        <div class="mini-stats">
+          <div class="mini-stat"><b>01</b><span>Learn concepts</span></div>
+          <div class="mini-stat"><b>02</b><span>Practise SQL</span></div>
+          <div class="mini-stat"><b>03</b><span>Build skills</span></div>
+        </div>
+      </div>
+    </div>
+
+    <section>
+      <div class="wrap">
+        <div class="section-head"><div><div class="eyebrow">Portal overview</div><h2>Everything for your class</h2><p class="sub">Quick access to the tools and materials you need.</p></div></div>
+        <div class="grid">
+          <article class="card"><div class="icon">📚</div><h3>Notes & revision</h3><p>Review database concepts, definitions, normalization, ER diagrams and revision questions.</p><a class="textlink" href="#resources">Browse notes →</a></article>
+          <article class="card"><div class="icon">⌘</div><h3>SQL tutorials</h3><p>Study common SQL commands with simple examples you can copy and practise.</p><a class="textlink" href="#sql">Open SQL lab →</a></article>
+          <article class="card"><div class="icon">📣</div><h3>Class updates</h3><p>Check the sample announcement board for reminders, deadlines and class news.</p><a class="textlink" href="#announcements">View updates →</a></article>
+          <article class="card"><div class="icon">🗓️</div><h3>Class timetable</h3><p>Keep your weekly database lessons and practical sessions organised.</p><a class="textlink" href="#timetable">View timetable →</a></article>
+          <article class="card"><div class="icon">💬</div><h3>Discussion space</h3><p>Draft a question or topic for class discussion. Online sharing will need a backend.</p><a class="textlink" href="#classroom">Open classroom →</a></article>
+          <article class="card"><div class="icon">📁</div><h3>Learning materials</h3><p>Choose a local file and practise downloading a sample resource on your device.</p><a class="textlink" href="#classroom">Open materials →</a></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="resources">
+      <div class="wrap">
+        <div class="section-head"><div><div class="eyebrow">Knowledge library</div><h2>Learning resources</h2><p class="sub">Search these sample topics. Replace them with your class's actual notes and PDFs.</p></div></div>
+        <div class="toolbar"><input class="field search" id="resourceSearch" type="search" placeholder="Search notes, topics or revision..." aria-label="Search resources"><select class="field" id="resourceType" style="width:auto;min-width:130px"><option value="all">All topics</option><option value="notes">Notes</option><option value="revision">Revision</option><option value="sql">SQL</option></select></div>
+        <div class="resource-list" id="resourceList">
+          <article class="card resource" data-type="notes" data-search="database introduction concepts notes"><div class="icon">📘</div><div><h3>Introduction to Databases</h3><p>Notes · Database basics</p></div><a class="textlink" href="#sql">Study →</a></article>
+          <article class="card resource" data-type="notes" data-search="relational model tables keys relationships"><div class="icon">🔗</div><div><h3>Relational Database Model</h3><p>Notes · Tables and keys</p></div><a class="textlink" href="#sql">Study →</a></article>
+          <article class="card resource" data-type="revision" data-search="normalization first second third normal form revision"><div class="icon">🧠</div><div><h3>Normalization Revision</h3><p>Revision · 1NF, 2NF and 3NF</p></div><a class="textlink" href="#sql">Revise →</a></article>
+          <article class="card resource" data-type="revision" data-search="entity relationship diagram erd practice"><div class="icon">🧩</div><div><h3>ER Diagrams Practice</h3><p>Revision · Entities and relationships</p></div><a class="textlink" href="#sql">Practise →</a></article>
+          <article class="card resource" data-type="sql" data-search="sql select where order by query"><div class="icon">⌘</div><div><h3>SQL SELECT Queries</h3><p>SQL · Retrieving records</p></div><a class="textlink" href="#sql">Open lab →</a></article>
+          <article class="card resource" data-type="sql" data-search="sql insert update delete data manipulation"><div class="icon">🛠️</div><div><h3>INSERT, UPDATE & DELETE</h3><p>SQL · Data manipulation</p></div><a class="textlink" href="#sql">Open lab →</a></article>
+        </div>
+        <p id="noResults" class="sub hidden">No matching resources. Try another search.</p>
+      </div>
+    </section>
+
+    <section id="sql">
+      <div class="wrap">
+        <div class="section-head"><div><div class="eyebrow">Hands-on practice</div><h2>SQL quick lab</h2><p class="sub">Select a sample to view its SQL. This is a code reference, not a live database engine.</p></div></div>
+        <div class="two-col">
+          <div class="card stack">
+            <label for="sqlChoice">Choose a SQL example</label>
+            <select class="field" id="sqlChoice">
+              <option value="select">SELECT records</option><option value="insert">INSERT a student</option><option value="update">UPDATE a record</option><option value="create">CREATE a table</option><option value="join">JOIN two tables</option>
+            </select>
+            <pre id="sqlCode">SELECT student_name, course
+FROM students
+WHERE course = 'ICT'
+ORDER BY student_name;</pre>
+            <button class="btn" id="copySql" type="button">Copy SQL code</button>
+            <p class="status" id="copyStatus" aria-live="polite"></p>
+          </div>
+          <div class="card">
+            <div class="eyebrow">Remember</div><h3 style="margin-top:7px">SQL command guide</h3>
+            <p class="sub">A quick reminder of common commands.</p>
+            <div class="table-wrap" style="margin-top:14px"><table><thead><tr><th>Command</th><th>Purpose</th></tr></thead><tbody>
+              <tr><td>SELECT</td><td>Read data</td></tr><tr><td>INSERT</td><td>Add records</td></tr><tr><td>UPDATE</td><td>Change records</td></tr><tr><td>DELETE</td><td>Remove records</td></tr><tr><td>CREATE TABLE</td><td>Create a table</td></tr><tr><td>JOIN</td><td>Combine related data</td></tr>
+            </tbody></table></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="announcements">
+      <div class="wrap">
+        <div class="section-head"><div><div class="eyebrow">Stay informed</div><h2>Assignments & announcements</h2><p class="sub">Sample entries to replace with real class information.</p></div></div>
+        <div class="grid">
+          <article class="card"><div class="eyebrow">Assignment · Sample</div><h3 style="margin-top:8px">Database design exercise</h3><p>Draw an ER diagram for a simple student registration system and identify its entities, attributes and relationships.</p><span class="textlink">Add your actual deadline before publishing</span></article>
+          <article class="card"><div class="eyebrow">Revision · Sample</div><h3 style="margin-top:8px">SQL practice questions</h3><p>Write queries using SELECT, WHERE, ORDER BY and COUNT. Practise using a sample student table.</p><span class="textlink">Practice regularly →</span></article>
+          <article class="card"><div class="eyebrow">Announcement · Sample</div><h3 style="margin-top:8px">Welcome to the portal</h3><p>Use this space for verified lesson reminders, assignment instructions and class notices.</p><span class="textlink">Keep checking updates →</span></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="timetable">
+      <div class="wrap">
+        <div class="section-head"><div><div class="eyebrow">Plan your week</div><h2>Class timetable</h2><p class="sub">Illustrative timetable only — replace it with your real class schedule.</p></div></div>
+        <div class="card table-wrap" style="padding:0"><table><thead><tr><th>Day</th><th>Session</th><th>Topic</th><th>Activity</th></tr></thead><tbody>
+          <tr><td>Monday</td><td>To be confirmed</td><td>Database fundamentals</td><td>Lecture</td></tr>
+          <tr><td>Tuesday</td><td>To be confirmed</td><td>Relational model</td><td>Class notes</td></tr>
+          <tr><td>Wednesday</td><td>To be confirmed</td><td>SQL basics</td><td>Practical</td></tr>
+          <tr><td>Thursday</td><td>To be confirmed</td><td>Normalization & ERD</td><td>Exercises</td></tr>
+          <tr><td>Friday</td><td>To be confirmed</td><td>Revision</td><td>Questions & answers</td></tr>
+        </tbody></table></div>
+      </div>
+    </section>
+
+    <section id="classroom">
+      <div class="wrap">
+        <div class="section-head"><div><div class="eyebrow">Classroom tools</div><h2>Student hub</h2><p class="sub">Demo tools for the first version of your public site.</p></div></div>
+        <div class="two-col">
+          <div class="card">
+            <div class="icon">👤</div><h3>Student registration / login</h3>
+            <p>This demo checks the form in your browser only. It does not create an account, save a password, or log you into a real system.</p>
+            <form id="demoLogin" class="stack">
+              <input class="field" type="text" id="studentName" placeholder="Student name" required>
+              <input class="field" type="email" id="studentEmail" placeholder="Email address" required>
+              <button class="btn" type="submit">Try demo form</button>
+            </form>
+            <p class="status" id="loginStatus" aria-live="polite"></p>
+            <div class="notice">Do not enter a real password here. Secure authentication will be added through a backend service in a later step.</div>
+          </div>
+          <div class="card">
+            <div class="icon">📂</div><h3>Learning material demo</h3>
+            <p>Select a file from your phone. The file stays on your device; this does not upload it to the public website.</p>
+            <div class="stack">
+              <input class="field" type="file" id="localFile" accept=".pdf,.doc,.docx,.ppt,.pptx,.txt,.sql,.jpg,.png">
+              <button class="btn secondary" type="button" id="downloadSample">Download sample SQL file</button>
+              <p class="status" id="fileStatus" aria-live="polite"></p>
+            </div>
+            <div class="notice">Public websites must not expose private student records or confidential class files. We will connect shared uploads and discussions to secure storage later.</div>
+          </div>
+        </div>
+        <div class="card" style="margin-top:17px">
+          <div class="icon">💬</div><h3>Discussion forum preview</h3>
+          <p>Write a question locally to preview a discussion post. It is not sent to classmates or saved online.</p>
+          <form id="discussionForm" class="stack">
+            <input class="field" id="discussionTitle" placeholder="Discussion title" required>
+            <textarea class="field" id="discussionText" rows="3" placeholder="Ask a database question..." required></textarea>
+            <button class="btn" type="submit">Preview discussion post</button>
+          </form>
+          <div id="discussionPreview" class="notice hidden"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap foot"><span>© <span id="year"></span> ICT DATABASE CLASS</span><span>Learn • Practise • Grow · Built for students</span></div>
+  </footer>
+
+  <script>
+    const resources = document.querySelectorAll('.resource');
+    const search = document.getElementById('resourceSearch');
+    const type = document.getElementById('resourceType');
+    function filterResources() {
+      const q = search.value.toLowerCase().trim();
+      let shown = 0;
+      resources.forEach(item => {
+        const matchesText = (item.dataset.search + ' ' + item.innerText).toLowerCase().includes(q);
+        const matchesType = type.value === 'all' || item.dataset.type === type.value;
+        const visible = matchesText && matchesType;
+        item.classList.toggle('hidden', !visible);
+        if (visible) shown++;
+      });
+      document.getElementById('noResults').classList.toggle('hidden', shown !== 0);
+    }
+    search.addEventListener('input', filterResources);
+    type.addEventListener('change', filterResources);
+
+    const sqlExamples = {
+      select: "SELECT student_name, course\nFROM students\nWHERE course = 'ICT'\nORDER BY student_name;",
+      insert: "INSERT INTO students (student_name, course)\nVALUES ('Amina', 'ICT');",
+      update: "UPDATE students\nSET course = 'ICT Database'\nWHERE student_id = 1;",
+      create: "CREATE TABLE students (\n  student_id INT PRIMARY KEY,\n  student_name VARCHAR(100) NOT NULL,\n  course VARCHAR(80)\n);",
+      join: "SELECT students.student_name, enrolments.unit_name\nFROM students\nJOIN enrolments\n  ON students.student_id = enrolments.student_id;"
+    };
+    const sqlChoice = document.getElementById('sqlChoice');
+    const sqlCode = document.getElementById('sqlCode');
+    sqlChoice.addEventListener('change', () => { sqlCode.textContent = sqlExamples[sqlChoice.value]; });
+    document.getElementById('copySql').addEventListener('click', async () => {
+      const status = document.getElementById('copyStatus');
+      try {
+        await navigator.clipboard.writeText(sqlCode.textContent);
+        status.textContent = 'SQL copied. Paste it into your notes or SQL editor.';
+      } catch {
+        const range = document.createRange();
+        range.selectNodeContents(sqlCode);
+        const selection = window.getSelection();
+        selection.removeAllRanges(); selection.addRange(range);
+        status.textContent = 'Select the highlighted code and choose Copy from your browser menu.';
+      }
+    });
+
+    document.getElementById('demoLogin').addEventListener('submit', event => {
+      event.preventDefault();
+      const name = document.getElementById('studentName').value.trim();
+      document.getElementById('loginStatus').textContent = `Demo only: hello ${name}. No account was created and no information was sent or saved.`;
+    });
+
+    document.getElementById('localFile').addEventListener('change', event => {
+      const file = event.target.files[0];
+      document.getElementById('fileStatus').textContent = file ? `${file.name} selected (${Math.ceil(file.size / 1024)} KB). This file has not been uploaded.` : '';
+    });
+
+    document.getElementById('downloadSample').addEventListener('click', () => {
+      const content = "-- ICT DATABASE CLASS: sample SQL practice\nCREATE TABLE students (\n  student_id INT PRIMARY KEY,\n  student_name VARCHAR(100) NOT NULL,\n  course VARCHAR(80)\n);\n\nSELECT * FROM students;\n";
+      const blob = new Blob([content], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'ict-database-class-sample.sql'; a.click();
+      URL.revokeObjectURL(url);
+      document.getElementById('fileStatus').textContent = 'Sample SQL download started.';
+    });
+
+    document.getElementById('discussionForm').addEventListener('submit', event => {
+      event.preventDefault();
+      const title = document.getElementById('discussionTitle').value.trim();
+      const body = document.getElementById('discussionText').value.trim();
+      const preview = document.getElementById('discussionPreview');
+      preview.textContent = `Preview — ${title}: ${body}`;
+      preview.classList.remove('hidden');
+    });
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
